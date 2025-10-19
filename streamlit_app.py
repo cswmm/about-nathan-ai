@@ -8,7 +8,7 @@ import os
 
 
 # ---- PAGE SETUP ----
-st.title("💬 Nathan Durrant's RAG Chatbot")
+st.title("AboutNathan")
 st.write("Ask me anything about Nathan! This chatbot retrieves facts from his portfolio files before answering.")
 
 # ---- OPENAI CLIENT ----
