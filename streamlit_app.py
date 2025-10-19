@@ -1,56 +1,77 @@
 import streamlit as st
 from openai import OpenAI
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_openai import OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain_core.documents import Document
+import os
 
-# Show title and description.
-st.title("💬 Chatbot")
-st.write(
-    "This is a simple chatbot that uses OpenAI's GPT-3.5 model to generate responses. "
-    "To use this app, you need to provide an OpenAI API key, which you can get [here](https://platform.openai.com/account/api-keys). "
-    "You can also learn how to build this app step by step by [following our tutorial](https://docs.streamlit.io/develop/tutorials/llms/build-conversational-apps)."
-)
 
-# Ask user for their OpenAI API key via `st.text_input`.
-# Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
-# via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
-openai_api_key = st.text_input("OpenAI API Key", type="password")
-if not openai_api_key:
-    st.info("Please add your OpenAI API key to continue.", icon="🗝️")
-else:
+# ---- PAGE SETUP ----
+st.title("💬 Nathan Durrant's RAG Chatbot")
+st.write("Ask me anything about Nathan! This chatbot retrieves facts from his portfolio files before answering.")
 
-    # Create an OpenAI client.
-    client = OpenAI(api_key=openai_api_key)
+# ---- OPENAI CLIENT ----
+client = OpenAI(api_key=st.secrets["openai_api_key"])
+embeddings = OpenAIEmbeddings(api_key=st.secrets["openai_api_key"])
 
-    # Create a session state variable to store the chat messages. This ensures that the
-    # messages persist across reruns.
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
+# ---- LOAD & PREPARE DOCS ----
+@st.cache_resource
+def load_vectorstore():
+    docs = []
+    for filename in os.listdir("docs"):
+        if filename.endswith((".txt", ".md")):
+            with open(os.path.join("docs", filename), "r", encoding="utf-8") as f:
+                content = f.read()
+                docs.append(Document(page_content=content, metadata={"source": filename}))
 
-    # Display the existing chat messages via `st.chat_message`.
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+    splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=150)
+    chunks = splitter.split_documents(docs)
+    vectorstore = FAISS.from_documents(chunks, embeddings)
+    return vectorstore
 
-    # Create a chat input field to allow the user to enter a message. This will display
-    # automatically at the bottom of the page.
-    if prompt := st.chat_input("What is up?"):
+vectorstore = load_vectorstore()
 
-        # Store and display the current prompt.
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
+# ---- CHAT SESSION ----
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-        # Generate a response using the OpenAI API.
+# Display past chat
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# ---- USER INPUT ----
+if prompt := st.chat_input("Ask me about Nathan..."):
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    # --- Retrieve relevant context ---
+    retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
+    results = retriever.invoke(prompt)
+    context = "\n\n".join([doc.page_content for doc in results])
+
+    # --- Compose system + user messages for RAG ---
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "You are Nathan's personal portfolio assistant. "
+                "Use the retrieved context to answer accurately. "
+                "If the answer isn't in the context, say you’re not sure.\n\n"
+                f"Context:\n{context}"
+            ),
+        }
+    ] + [{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
+
+    # --- Generate response with streaming ---
+    with st.chat_message("assistant"):
         stream = client.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=[
-                {"role": m["role"], "content": m["content"]}
-                for m in st.session_state.messages
-            ],
+            messages=messages,
             stream=True,
         )
+        response = st.write_stream(stream)
 
-        # Stream the response to the chat using `st.write_stream`, then store it in 
-        # session state.
-        with st.chat_message("assistant"):
-            response = st.write_stream(stream)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+    st.session_state.messages.append({"role": "assistant", "content": response})
