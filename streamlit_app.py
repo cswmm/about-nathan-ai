@@ -15,6 +15,10 @@ st.set_page_config(
 )
 st.markdown("""
     <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    </style>
+    <style>
         .main-title {
             font-size: 3.2rem;
             font-weight: 700;
@@ -28,7 +32,7 @@ st.markdown("""
         }
     </style>
     <div class="main-title">💼 About Nathan</div>
-    <div class="subtitle">Ask me anything about Nathan’s experience, skills, or projects.</div>
+    <div class="subtitle">Ask me anything about Nathan</div>
 """, unsafe_allow_html=True)
 with st.sidebar:
     st.markdown("### About This Chatbot")

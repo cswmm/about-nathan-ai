@@ -1,0 +1,8 @@
+Project: AboutNathan
+Description: A retrieval-augmented chatbot that answers questions about my background, built with LangChain and OpenAI APIs. It demonstrates semantic search, embedding pipelines, and conversational UX design.
+
+Project: Substitution Cipher Solver
+Description: A Python tool that automatically deciphers substitution ciphers using Jakobsen’s algorithm and AI-generated test data. Focused on probabilistic pattern analysis and automation of classical cryptography.
+
+Project: Club Hub
+Description: A fullstack web app for university clubs built with React and MySQL, emphasizing clean schema design and backend scalability.
