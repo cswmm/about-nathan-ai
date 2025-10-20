@@ -18,6 +18,9 @@ I’ve worked with Java Spring, MySQL, React, and JavaScript, improving workflow
 At San José State University, I’m also part of an ongoing Cybersecurity and Machine Learning research project, exploring how behavioral data can improve authentication systems.
 It’s been a rewarding challenge that combines my love for data science, security, and AI.
 
+Outside of technical work experience, I have also spent my time working part time jobs to pay for college. I worked as a lifeguard during high school for about 4 years,
+and am now working as a Climbing Wall Supervisor for the past 2 years. I love bring my hobbies and passion into work, which I hope to continue in the future.
+
 Projects I’m Proud Of
 
 One of my favorite projects is this project, AboutNathan, an interactive chatbot built with LangChain and the OpenAI API.
