@@ -8,12 +8,35 @@ import os
 
 
 # ---- PAGE SETUP ----
-st.title("AboutNathan")
-st.write("Ask me anything about Nathan! This chatbot retrieves facts from his portfolio files before answering.")
-
-# ---- OPENAI CLIENT ----
-client = OpenAI(api_key=st.secrets["openai_api_key"])
-embeddings = OpenAIEmbeddings(api_key=st.secrets["openai_api_key"])
+st.set_page_config(
+    page_title="About Nathan",
+    page_icon="💬",
+    layout="centered",
+)
+st.markdown("""
+    <style>
+        .main-title {
+            font-size: 3.2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.2em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 1.5em;
+        }
+    </style>
+    <div class="main-title">💼 About Nathan</div>
+    <div class="subtitle">Ask me anything about Nathan’s experience, skills, or projects.</div>
+""", unsafe_allow_html=True)
+with st.sidebar:
+    st.markdown("### About This Chatbot")
+    st.write("This AI assistant retrieves insights from Nathan’s portfolio and projects.")
+    st.write("---")
+    st.markdown("**Built with:** LangChain + OpenAI + Streamlit")
+    st.write("---")
+    st.markdown("**Ask about my:** Experience, Projects, Skills, Clubs, Hobbies, etc")
 
 # ---- LOAD & PREPARE DOCS ----
 @st.cache_resource
@@ -30,7 +53,11 @@ def load_vectorstore():
     vectorstore = FAISS.from_documents(chunks, embeddings)
     return vectorstore
 
-vectorstore = load_vectorstore()
+# ---- OPENAI CLIENT ----
+with st.spinner("..."):
+    client = OpenAI(api_key=st.secrets["openai_api_key"])
+    embeddings = OpenAIEmbeddings(api_key=st.secrets["openai_api_key"]) 
+    vectorstore = load_vectorstore()
 
 # ---- CHAT SESSION ----
 if "messages" not in st.session_state:
@@ -49,7 +76,8 @@ if prompt := st.chat_input("Ask me about Nathan..."):
 
     # --- Retrieve relevant context ---
     retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
-    results = retriever.invoke(prompt)
+    with st.spinner("..."):
+        results = retriever.invoke(prompt)
     context = "\n\n".join([doc.page_content for doc in results])
 
     # --- Compose system + user messages for RAG ---

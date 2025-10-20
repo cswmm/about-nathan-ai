@@ -12,8 +12,10 @@ I’m also drawn to developer experience and tooling efficiency — anything tha
 
 Experience
 
-I worked as a Fullstack Software Engineer Intern at Veeva Systems last summer, where I helped develop an internal productivity tool used by engineering teams across the company.
-I’ve worked with Java Spring, MySQL, React, and JavaScript, improving workflow automation and data access for engineers to help serve thousands of users.
+I worked as a Fullstack Software Engineer Intern at Veeva Systems last summer, where I helped develop an internal productivity tool used by engineering teams across the company. I started by fixing small bugs and defects in our teams area of the code base, totalling around 4 separate tickets by the end of the internship.
+Then, I gathered design requirements and met with multiple engineers to plan the best implementation and utility of this new tool. It brings previously unretrievable data to the UI, saving a large amount of time for engineers diagnosing customer problems on our platform.
+In this experience, I worked with Java, Spring, MySQL, React, and JavaScript, improving workflow automation and data access for engineers to help serve thousands of users. I also used Jenkins to ensure smooth deployment with our CI/CD pipeline.
+This project was a success, shown by engineers across multiple teams adopting this tool and the entirely new functionality introduced.
 
 At San José State University, I’m also part of an ongoing Cybersecurity and Machine Learning research project, exploring how behavioral data can improve authentication systems.
 It’s been a rewarding challenge that combines my love for data science, security, and AI.
