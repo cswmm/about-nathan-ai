@@ -32,7 +32,7 @@ st.markdown("""
         }
     </style>
     <div class="main-title">💼 About Nathan</div>
-    <div class="subtitle">Ask me anything about Nathan</div>
+    <div class="subtitle">Ask me anything about Nathan Durrant</div>
 """, unsafe_allow_html=True)
 with st.sidebar:
     st.markdown("### About This Chatbot")

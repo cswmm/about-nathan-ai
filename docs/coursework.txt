@@ -1,0 +1,22 @@
+Course: Intro to AI
+Key takeaway: Learning about agent definition, with search problems and adversarial search. Beginning to cover formal logic with Prolog,
+and expecting to apply the takeaways in a future chess engine project, if time and my mental sanity allows.
+
+Course: Intro to Game Programming
+Key takeaway: Learning the fundamentals of game engines, with particle systems and collision detection. Gaining experience working with C++ using libraries such as OpenFrameworks.
+
+Course: Machine Learning
+Key takeaway: Built various models, including neural network models from scratch, while applying different optimization methods such as gradient descent.
+Used libraries such as scikit-learn, keras, tensorflow, numpy, and pandas.
+
+Course: Operating Systems
+Key takeaway: Implemented CPU scheduling simulators and process synchronization models in C/C++ to understand concurrent systems. Gained exposure to deadlock and race conditions, mutex and semaphore locks, and using threads and pipes in a multithreaded program.
+
+Course: Information Security
+Key takeaway: Studied encryption methods, key exchange protocols, and gained exposure to computer networking fundamentals, such as TCP and the OSI model.
+Briefly studied software reverse engineering and malware, as well as authentication systems. This class inspired the encryption project I built, as well as 
+my ongoing research with the professor.
+
+Course: Intro to Database Management
+Key takeaway: Applied fundamentals of relational database management in a fullstack project, using ER diagrams and BCNF reduction to achieve a performant dbms.
+Used MySQL, Flask, Python, and React in final project.
