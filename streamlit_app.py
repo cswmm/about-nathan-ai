@@ -31,7 +31,7 @@ st.markdown("""
             margin-bottom: 1.5em;
         }
     </style>
-    <div class="main-title">💼 About Nathan</div>
+    <div class="main-title">About Nathan</div>
     <div class="subtitle">Ask me anything about Nathan Durrant</div>
 """, unsafe_allow_html=True)
 with st.sidebar:
